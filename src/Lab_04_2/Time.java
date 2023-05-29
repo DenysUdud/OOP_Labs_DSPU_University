@@ -9,9 +9,7 @@ public class Time {
     private int second;
 
     public Time() {
-        this.hour = 0;
-        this.minute = 0;
-        this.second = 0;
+        this(0, 0, 0);
     }
 
     public Time(int hour, int minute, int second) {
@@ -21,7 +19,10 @@ public class Time {
     }
 
     public Time(String timeString) {
-        String[] timeParts = timeString.split(":");
+        this(timeString.split(":"));
+    }
+
+    public Time(String[] timeParts) {
         if (timeParts.length != 3) {
             System.out.println("Некоректний формат часу");
             return;
@@ -42,7 +43,7 @@ public class Time {
     }
 
     public void addSeconds(int seconds) {
-        int totalSeconds = this.hour * 3600 + this.minute * 60 + this.second;
+        int totalSeconds = this.toSeconds();
         totalSeconds += seconds;
         totalSeconds = (totalSeconds % 86400 + 86400) % 86400;
         this.hour = totalSeconds / 3600;
@@ -55,12 +56,12 @@ public class Time {
     }
 
     public int toMinutes() {
-        int totalSeconds = this.hour * 3600 + this.minute * 60 + this.second;
+        int totalSeconds = this.toSeconds();
         return (totalSeconds + 30) / 60;
     }
 
     public int getHour() {
-        return hour;
+        return this.hour;
     }
 
     public void setHour(int hour) {
@@ -72,7 +73,7 @@ public class Time {
     }
 
     public int getMinute() {
-        return minute;
+        return this.minute;
     }
 
     public void setMinute(int minute) {
@@ -84,7 +85,7 @@ public class Time {
     }
 
     public int getSecond() {
-        return second;
+        return this.second;
     }
 
     public void setSecond(int second) {
@@ -105,6 +106,14 @@ public class Time {
         }
     }
 
+    public void Init(int hour, int minute) {
+        Init(hour, minute, 0);
+    }
+
+    public void Init(int hour) {
+        Init(hour, 0, 0);
+    }
+
     public void Read() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введіть години: ");
@@ -113,11 +122,10 @@ public class Time {
         int minute = scanner.nextInt();
         System.out.print("Введіть секунди: ");
         int second = scanner.nextInt();
-        Init(hour, minute, second);
+        this.Init(hour, minute, second);
     }
 
     public void Display() {
-        System.out.printf("%02d:%02d:%02d%n", hour, minute, second);
+        System.out.printf("%02d:%02d:%02d%n", this.hour, this.minute, this.second);
     }
 }
-
